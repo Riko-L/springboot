@@ -1,6 +1,8 @@
-package com.rko.myspring;
+package com.rko.myspring.repository;
 
 import org.springframework.data.repository.CrudRepository;
+
+import com.rko.myspring.model.User;
 
 
 //This will be AUTO IMPLEMENTED by Spring into a Bean called userRepository
