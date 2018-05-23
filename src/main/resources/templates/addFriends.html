@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Liste d'utilisateur</title>
+</head>
+<body>
+<h1>Hello</h1>
+
+
+<table>
+    <tr th:each=" ami : ${users}">
+        <td th:text="${ami.fullName}"> <td>
+        <td> <form action="#" th:action="@{/ami/{user_id}/add/{id} (id=${ami.id},user_id=${user_id}) }" th:method="post" >
+        <input type="hidden" name="_method" value="post" />
+        <button type="submit" id="submitBtnDetete" class="danger">Add</button>
+    </form></td>
+
+    </tr>
+</table>
+
+</body>
+</html>

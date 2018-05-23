@@ -1,11 +1,17 @@
 package com.rko.myspring.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import javax.validation.constraints.DecimalMax;
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.Max;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity // This tells Hibernate to make a table out of this class
+@Table(
+		uniqueConstraints = @UniqueConstraint(name = "unique_email",columnNames = {"email"})
+)
 public class User {
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
@@ -14,10 +20,16 @@ public class User {
     private String firstName;
     
     private String lastName;
-    
+
+    @DecimalMax(value = "9999")
+	@DecimalMin(value = "1000")
     private Integer birthdayDate;
-    
+
+    @Email
     private String email;
+
+	@ManyToMany
+    private List<User> amis = new ArrayList<User>();
 
 	public Long getId() {
 		return id;
@@ -62,7 +74,21 @@ public class User {
 	public String getFullName() {
 		return getLastName() + " " + getFirstName();
 	}
-    
 
+	public List<User> getAmis() {
+		return amis;
+	}
+
+	public void setAmis(List<User> amis) {
+		this.amis = amis;
+	}
+
+	public void addAmis(User user){
+		this.amis.add(user);
+	}
+
+	public User getAmis(long id){
+		return this.amis.get((int) id);
+	}
 
 }

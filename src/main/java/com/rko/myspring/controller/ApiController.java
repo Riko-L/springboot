@@ -60,6 +60,7 @@ public class ApiController {
 			n.setLastName(lastName);
 			n.setEmail(email);
 			n.setBirthdayDate(birthdayDate);
+			n.setBirthdayDate(1552);
 
 			userRepository.save(n);
 
