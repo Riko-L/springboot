@@ -1,10 +1,7 @@
 package com.rko.myspring.model;
 
 import javax.persistence.*;
-import javax.validation.constraints.DecimalMax;
-import javax.validation.constraints.DecimalMin;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.Max;
+import javax.validation.constraints.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,15 +14,17 @@ public class User {
     @GeneratedValue(strategy=GenerationType.AUTO)
     private Long id;
 
+    @NotEmpty
     private String firstName;
-    
+
+    @NotEmpty
     private String lastName;
 
-    @DecimalMax(value = "9999")
-	@DecimalMin(value = "1000")
+
     private Integer birthdayDate;
 
     @Email
+	@NotEmpty
     private String email;
 
 	@ManyToMany

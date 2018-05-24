@@ -6,8 +6,12 @@ import com.rko.myspring.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 
@@ -17,10 +21,11 @@ public class WebController {
     @Autowired
     private UserRepository userRepository;
 
-
     @GetMapping(path = "/user")
     public String listAllUser(Model model) {
+
         model.addAttribute("users", userRepository.findAll());
+
         return "list";
     }
 
@@ -38,7 +43,6 @@ public class WebController {
         return "404";
     }
 
-
     @GetMapping(path = "/register")
     public String registerForm(Model model) {
 
@@ -46,15 +50,17 @@ public class WebController {
         return "register/register";
     }
 
-
     @PostMapping(path = "/register")
-    public String registerSubmit(@ModelAttribute User user) {
+    public String registerSubmit(@Valid @ModelAttribute User userForm, BindingResult bindingResult) {
 
-        userRepository.save(user);
 
-        return "register/registerResult";
+        if (bindingResult.hasErrors()) {
+            return "register/register";
+        }
+
+        userRepository.save(userForm);
+        return "redirect:/user";
     }
-
 
     @GetMapping(path = "/update/{id}")
     public String updateForm(@PathVariable Long id, Model model) {
@@ -90,7 +96,7 @@ public class WebController {
         }
 
 
-        return "update/updateResult";
+        return "redirect:/user/" + userForm.getId();
 
     }
 
@@ -98,11 +104,11 @@ public class WebController {
     public String userDelete(@PathVariable long id) {
         userRepository.deleteById(id);
 
-        return "deleteResult";
+        return "redirect:/user";
     }
 
     @PostMapping(path = "/ami/{id_user}/add/{id}")
-    public String addFriend(@PathVariable(name = "id_user") Long id_user ,@PathVariable(name = "id") Long id) {
+    public String addFriend(@PathVariable(name = "id_user") Long id_user, @PathVariable(name = "id") Long id) {
 
 
         Optional<User> cuser = userRepository.findById(id_user);
@@ -120,14 +126,31 @@ public class WebController {
 
         }
 
-    return "redirect:/user/{id_user}";
+        return "redirect:/user/{id_user}";
 
     }
 
     @GetMapping(path = "/addlist/{id}")
     public String listForFriend(@PathVariable Long id, Model model) {
-        model.addAttribute("users", userRepository.findAll());
-        model.addAttribute("user_id" , id);
+        List<User> listUser = new ArrayList<User>();
+        User utemp = null;
+
+        Optional<User> u = userRepository.findById(id);
+
+        if (u.isPresent()) {
+
+            utemp = u.get();
+
+        }
+        for (User user : userRepository.findAll()) {
+
+            if (user.getId() != id && !utemp.getAmis().contains(user)) {
+                listUser.add(user);
+            }
+
+        }
+        model.addAttribute("users", listUser);
+        model.addAttribute("user_id", id);
 
         return "addFriends";
     }
