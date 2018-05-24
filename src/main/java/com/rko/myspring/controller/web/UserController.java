@@ -1,7 +1,8 @@
-package com.rko.myspring.controller;
+package com.rko.myspring.controller.web;
 
-
+import com.rko.myspring.model.Message;
 import com.rko.myspring.model.User;
+import com.rko.myspring.repository.MessageRepository;
 import com.rko.myspring.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -14,12 +15,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-
 @Controller
-public class WebController {
+public class UserController {
+
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private MessageRepository messageRepository;
 
     @GetMapping(path = "/user")
     public String listAllUser(Model model) {
@@ -32,11 +36,19 @@ public class WebController {
     @GetMapping(path = "/user/{id}")
     public String userProfil(@PathVariable long id, Model model) {
 
+        List<Message> messages = new ArrayList<Message>();
         Optional<User> user = userRepository.findById(id);
+
+        for (Message msg : messageRepository.findAll()) {
+            if(msg.getDestinataire().getId() == id){
+                messages.add(msg);
+            }
+        }
 
         if (user.isPresent()) {
 
             model.addAttribute("user", user.get());
+            model.addAttribute("msg", messages);
             return "profil";
         }
 
@@ -154,4 +166,5 @@ public class WebController {
 
         return "addFriends";
     }
+
 }

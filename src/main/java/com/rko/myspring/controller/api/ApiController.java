@@ -1,4 +1,4 @@
-package com.rko.myspring.controller;
+package com.rko.myspring.controller.api;
 
 import java.util.Optional;
 
