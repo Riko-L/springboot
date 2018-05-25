@@ -19,7 +19,7 @@
   </tr>
     <tr th:each="user : ${users}">
       <td><form action="#" th:action="@{/update/{id}(id=${user.id})}" method="get" >
-        <input class="btn btn-info" type="submit" value="update" />
+        <input class="btn btn-warning" type="submit" value="update" />
       </form></td>
       <td th:text="${user.id}">1</td>
       <td><a th:href="@{/user/{id}(id=${user.id})}" th:text="${user.firstName}">Prénom ...</a></td>

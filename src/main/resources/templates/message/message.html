@@ -10,13 +10,26 @@
 <h1>Ecrire un message</h1>
 
 <form class="form-control" action="#" th:action="@{/message/new}" th:object="${msg}" method="post">
+
+    <div class="form-row input-group mb-3">
+        <div class="input-group-prepend">
+            <label class="input-group-text" for="inputGroupSelect02">Expéditeur</label>
+        </div>
+        <select th:field="*{expediteur}" class="form-control custom-select" id="inputGroupSelect02">
+
+            <option selected th:value="${{userRequest.getId()}}" th:text="${userRequest.getFullName()}"  ></option>
+
+        </select>
+
+    </div>
+
     <div class="form-row input-group mb-3">
         <div class="input-group-prepend">
             <label class="input-group-text" for="inputGroupSelect01">Destinataire</label>
         </div>
-        <select th:name="${userRequest}" class="form-control custom-select" id="inputGroupSelect01">
-            <option selected>Choisir un destinataire...</option>
-            <option th:each=" user : ${users}" th:value="${user.getId()}" th:text="${user.getFullName()}" th:selected="${userRequest.id == user.id}"></option>
+        <select th:field="*{destinataire}" class="form-control custom-select" id="inputGroupSelect01">
+            <!--<option th:value="0" th:text="-&#45;&#45;Select Type-&#45;&#45;"></option>-->
+            <option th:each=" user : ${users}" th:value="${{user.getId()}}" th:text="${user.getFullName()}" th:selected="${userRequest.getId()== user.getId()}"></option>
 
         </select>
 

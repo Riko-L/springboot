@@ -10,12 +10,20 @@
 
 <table class="table">
     <tr>
+        <td>#ID</td>
         <td>Expéditeur</td>
         <td>Message</td>
+        <td>DELETE</td>
     </tr>
     <tr th:each="message : ${messages}">
+
+        <td th:text="${message.getId()}"></td>
         <td th:text="${message.getExpediteur().getFullName()}"></td>
         <td th:text="${message.getContent()}"></td>
+        <td><form action="#" th:action="@{/message/{id}(id=${message.id})}"  th:method="delete" >
+            <input type="hidden" name="_method" value="delete" />
+            <button class="btn btn-danger" type="submit" id="submitBtnDetete">Supprimer</button>
+        </form></td>
     </tr>
 
 </table>
