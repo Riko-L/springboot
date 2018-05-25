@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Controller
+
 public class MessageController {
 
     @Autowired
@@ -25,8 +26,6 @@ public class MessageController {
 
     @Autowired
     private MessageRepository messageRepository;
-
-
 
     @GetMapping(path = "/message/{id}")
     public String getAllMessage(@PathVariable Long id , Model model) {
@@ -74,7 +73,6 @@ public class MessageController {
         return "message/message";
     }
 
-
     @PostMapping(path = "/message/new")
     public String sendMessageSubmit(@Valid @ModelAttribute Message msg, BindingResult bindingResul) {
 
@@ -84,7 +82,6 @@ public class MessageController {
          messageRepository.save(msg);
         return "redirect:/user";
     }
-
 
     @DeleteMapping(path = "/message/{id}")
     public String deleteMsg(@PathVariable Long id) {

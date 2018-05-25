@@ -8,9 +8,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.ConstraintViolationException;
 import javax.validation.Valid;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -55,24 +59,40 @@ public class UserController {
         return "404";
     }
 
-    @GetMapping(path = "/register")
-    public String registerForm(Model model) {
-
-        model.addAttribute("user", new User());
-        return "register/register";
-    }
-
-    @PostMapping(path = "/register")
-    public String registerSubmit(@Valid @ModelAttribute User userForm, BindingResult bindingResult) {
-
-
-        if (bindingResult.hasErrors()) {
-            return "register/register";
-        }
-
-        userRepository.save(userForm);
-        return "redirect:/user";
-    }
+//    @GetMapping(path = "/registration")
+//    public String registerForm(Model model) {
+//
+//        model.addAttribute("user", new User());
+//        return "register/register";
+//    }
+//
+//    @PostMapping(path = "/registration")
+//    public String registerSubmit(@Valid @ModelAttribute User user, BindingResult bindingResult) {
+//
+//
+//        if (bindingResult.hasErrors()) {
+//            return "register/register";
+//        }
+//
+//         try {
+//
+//             userRepository.save(user);
+//
+//         }catch(Exception e)  {
+//            ObjectError error = new FieldError("user","email","An account already exists for this email.");
+//
+//            bindingResult.addError(error);
+//
+//            bindingResult.getModel();
+//
+//
+//            return "register/register";
+//
+//         }
+//
+//
+//        return "redirect:/user";
+//    }
 
     @GetMapping(path = "/update/{id}")
     public String updateForm(@PathVariable Long id, Model model) {
