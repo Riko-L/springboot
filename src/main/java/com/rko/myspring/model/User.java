@@ -7,6 +7,7 @@ import java.util.List;
 
 @Entity // This tells Hibernate to make a table out of this class
 @Table(
+		name = "social_user",
 		uniqueConstraints = @UniqueConstraint(name = "unique_email",columnNames = {"email"})
 )
 public class User {
